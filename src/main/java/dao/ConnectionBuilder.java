@@ -6,8 +6,8 @@ import java.sql.SQLException;
 
 public class ConnectionBuilder {
 
-    private static final String DB_URL = "jdbc:postgresql://localhost:5432/uber";
-    private static final String USER = "postgres";
+    private static final String DB_URL = "jdbc:mysql://localhost:5432/myDb";
+    private static final String USER = "root";
     private static final String PASS = "1234";
     public static Connection connection ;
 

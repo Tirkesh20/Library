@@ -3,6 +3,7 @@ package entities;
 public class Book {
     private int id;
     private String name;
+    private Genre genre;
 
     public Book(){
 
@@ -32,12 +33,21 @@ public class Book {
         this.name = name;
     }
 
+    public Genre getGangre() {
+        return genre;
+    }
+
+    public void setGangre(Genre genre) {
+        this.genre = genre;
+    }
+
     public int hashCode(){
         int result=14;
         result+=5*result+Integer.hashCode(id);
         result+=5*result+hashCode();
         return result;
     }
+
 
     @Override
     public String toString() {

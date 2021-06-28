@@ -1,9 +1,9 @@
 package dao.implementation;
 
-import Exceptions.DaoException;
+import exceptions.DaoException;
 import dao.Dao;
-import entities.Author;
 import entities.Book;
+import entities.Genre;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -89,14 +89,41 @@ public class BookDao extends Dao<Book> {
         }
     }
 
+    public Book readByName(String bookName) throws DaoException {
+        String query = "select * from Book where name=?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(2,bookName);
+            ResultSet resultSet = stmt.executeQuery();
+            return (resultSet.next()) ? fetchResultSet(resultSet) : null;
+        } catch (SQLException e) {
+            throw  new DaoException(e.getMessage());
+        }
+    }
+
+    public List<Book> findByGenre(String genre)throws  DaoException{
+            String query = "select * from book where genre=?";
+            try (PreparedStatement stmt = connection.prepareStatement(query)) {
+                ResultSet resultSet = stmt.executeQuery();
+                List<Book> accounts = new ArrayList<>();
+                while (resultSet.next()) {
+                    accounts.add(fetchResultSet(resultSet));
+                }
+                return accounts;
+            } catch (SQLException e) {
+                throw new DaoException(e.getMessage());
+            }
+    }
+
     private Book fetchResultSet(ResultSet resultSet) throws SQLException {
         Book book = new Book();
         book.setId(resultSet.getInt("id"));
-        book.setName(resultSet.getString("first_name"));
+        book.setName(resultSet.getString("name"));
+        book.setGangre(Genre.valueOf(resultSet.getString("genre")));
         return book;
     }
     private void fetchSet(PreparedStatement stmt, Book entity) throws SQLException {
         stmt.setLong(1, entity.getId());
         stmt.setString(2, entity.getName());
+        stmt.setString(2, entity.getGangre().toString());
     }
 }

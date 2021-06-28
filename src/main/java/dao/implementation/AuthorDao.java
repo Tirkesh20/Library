@@ -1,6 +1,6 @@
 package dao.implementation;
 
-import Exceptions.DaoException;
+import exceptions.DaoException;
 import dao.Dao;
 import entities.Author;
 
@@ -20,6 +20,17 @@ public class AuthorDao extends Dao<Author> {
         try (Statement stmt = connection.createStatement()) {
             stmt.executeUpdate(sql);
         } catch (SQLException e) {
+        }
+    }
+
+    public Author findByName(String name) throws DaoException {
+        String query = "select * from Author where name=?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(2, name);
+            ResultSet resultSet = stmt.executeQuery();
+            return (resultSet.next()) ? fetchResultSet(resultSet) : null;
+        } catch (SQLException e) {
+            throw  new DaoException(e.getMessage());
         }
     }
 

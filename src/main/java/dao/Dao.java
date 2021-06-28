@@ -1,6 +1,6 @@
 package dao;
 
-import Exceptions.DaoException;
+import exceptions.DaoException;
 
 import java.sql.Connection;
 
